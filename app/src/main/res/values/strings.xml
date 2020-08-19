@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">IRMS</string>
+    <string name="logSelectLang">SELECT YOUR LANGUAGE</string>
+    <string name="logLangBtnTxt">English</string>
+    <string name="suName">Username</string>
+    <string name="suPassword">Password</string>
+    <string name="sign_up">SIGN IN</string>
+    <string name="logHelpPt1">Need</string>
+    <string name="logHelpPt2">\u0020help?</string>
+    <string name="logUser_not_available">User Not Available</string>
+    <string name="logNot_auth_user">Not authorized User</string>
+    <string name="logHelpDetails"> • Users have to be assigned to their corresponding workshop for a successful sign in \n\n  • Users have to sign in using their assigned POS Machine</string>
+</resources>

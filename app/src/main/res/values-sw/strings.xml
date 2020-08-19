@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IRMS</string>
+    <string name="logSelectLang">CHAGUA LUGHA YAKO</string>
+    <string name="logLangBtnTxt">Kiswahili</string>
+    <string name="suName">Jina Kamili</string>
+    <string name="suPassword">Neno la siri</string>
+    <string name="sign_up">JISAJILI</string>
+    <string name="logHelpPt1">Unahitaji</string>
+    <string name="logHelpPt2">\u0020msaada?</string>
+    <string name="logUser_not_available">User Not Available</string>
+    <string name="logNot_auth_user">Not authorized User</string>
+    <string name="logHelpDetails"> • Watumiaji wanabidi wapewe semina yao ili waweze kuingia \n\n  • Watumiaji wanahitaji kujiunga na mashine ya POS waliyopewa</string>
+</resources>
