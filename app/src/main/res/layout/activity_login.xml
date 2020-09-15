@@ -5,6 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login">
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:translationZ="99dp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,6 +42,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:paddingLeft="5dp"
             android:text="@string/suName"/>
         <EditText
@@ -47,6 +55,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:paddingLeft="5dp"
             android:text="@string/suPassword"/>
         <EditText
@@ -59,16 +68,22 @@
 
         <Button
             android:id="@+id/logSignIn"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/disabled_button"
             android:clickable="false"
             android:enabled="false"
             android:layout_marginTop="30dp"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:text="@string/sign_up"
             android:textColor="@android:color/white"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:padding="5dp"
+            android:text="@string/cp_forgotten_your_password"/>
     </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -91,12 +106,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
+            android:textSize="16sp"
             android:gravity="right"
             android:text="@string/logHelpPt1"/>
         <TextView
             android:id="@+id/logHelp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:layout_weight="0.5"
             android:textColor="@color/colorPrimary"
             android:text="@string/logHelpPt2"/>

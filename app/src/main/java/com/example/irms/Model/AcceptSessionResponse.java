@@ -1,11 +1,17 @@
 package com.example.irms.Model;
 
 public class AcceptSessionResponse {
-    String ErrorMessage,AllocatedStatus;
-    public String getErrorMessage(){
+    String ErrorMessage, AllocatedStatus;
+
+    public String getErrorMessage() {
         return ErrorMessage;
-    };
-    public String getAllocatedStatus(){
+    }
+
+    ;
+
+    public String getAllocatedStatus() {
         return AllocatedStatus;
-    };
+    }
+
+    ;
 }

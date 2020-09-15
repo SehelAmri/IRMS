@@ -1,11 +1,14 @@
 package com.example.irms;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,11 +17,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.irms.Client.RetrofitClient;
 import com.example.irms.Model.AcceptSessionResponse;
 import com.example.irms.Model.SessionDetailsResponse;
+import com.google.android.material.bottomnavigation.BottomNavigationMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONObject;
 
@@ -30,17 +37,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeFragment extends Fragment {
-    String logAuth,logWorkStationID,logUserId,logWorkStationDtlID;
+public class HomeFragment extends Fragment implements View.OnClickListener{
+    String logToken,logWorkStationID,logUserId,logWorkStationDtlID;
     Bundle bundle;
     TextView AllocatedOrAccepted,hmBusinessEntity,
             hmSessionID,hmGroupDesc,hmSessionDate,
             hmDistrict,hmRegion,hmCurrency;
     Button  hmSessionBtn,hmRetrySession,hmNewCollectionBtn;
-    RequestBody sessionDtlBody,saSessionBody;
+    Fragment selectedCollectionsFragment;
+    private Context mContext;
     Call<SessionDetailsResponse> call,retryCall;
     Call<AcceptSessionResponse>  acceptCall;
-    Map<String,String> sessionDetailsParams,saSessionParams;
     LinearLayout noSessionAvailable,currentSession;
     Boolean retryBtnIsClicked = false;
     View view;
@@ -49,17 +56,10 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home,container,false);
         initView(view);
-        sessionDetailsParams.put("UserID",logUserId);
-        sessionDetailsParams.put("WorkStationID",logWorkStationID);
-        sessionDtlBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(sessionDetailsParams)).toString());
-        saSessionParams.put("UserID", logUserId);
-        saSessionParams.put("WorkStationID", logWorkStationID);
-        saSessionParams.put("WorkStationDtlID", logWorkStationDtlID);
-        saSessionParams.put("WorkStationName", Build.SERIAL);
           call = RetrofitClient
                 .getmInstance()
                 .getApi()
-                .getDetails(logAuth,sessionDtlBody);
+                .getDetails(logToken);
         call.enqueue(sessionDetailsCallBack());
 
         hmRetrySession.setOnClickListener(view -> {
@@ -67,35 +67,32 @@ public class HomeFragment extends Fragment {
             retryCall = RetrofitClient
                     .getmInstance()
                     .getApi()
-                    .getDetails(logAuth,sessionDtlBody);
+                    .getDetails(logToken);
             retryCall.enqueue(sessionDetailsCallBack());
         });
         //
         hmSessionBtn.setOnClickListener(view -> {
-            saSessionParams.put("SessionID", hmSessionID.getText().toString());
-            saSessionBody = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(saSessionParams)).toString());
-            if(hmSessionBtn.getText().equals("ACCEPT")) {
+            if(hmSessionBtn.getText().equals(getString(R.string.hmAcceptSession))) {
                 acceptCall = RetrofitClient
                         .getmInstance()
                         .getApi()
-                        .getAcceptDetails(logAuth, saSessionBody);
+                        .getAcceptDetails(logToken);
                 acceptCall.enqueue(saSessionCallBack());
-                hmNewCollectionBtn.setBackground(getResources().getDrawable(R.drawable.enabled_button));
-            }else if(hmSessionBtn.getText().equals("SURRENDER")){
+            }else if(hmSessionBtn.getText().equals(getString(R.string.hmSurrenderSession))){
                 acceptCall = RetrofitClient
                         .getmInstance()
                         .getApi()
-                        .getSurrenderDetails(logAuth, saSessionBody);
+                        .getSurrenderDetails(logToken);
                 acceptCall.enqueue(saSessionCallBack());
-                hmNewCollectionBtn.setBackground(getResources().getDrawable(R.drawable.disabled_button));
             }
         });
+        hmNewCollectionBtn.setOnClickListener(this);
         //
         return view;
     }
     public AlertDialog alertDialog(String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(message).setPositiveButton("OK",null);
+        builder.setMessage(message).setPositiveButton(R.string.ALERT_OK,null);
         AlertDialog createAlertDialog = builder.create();
         createAlertDialog.show();
         return createAlertDialog;
@@ -117,20 +114,23 @@ public class HomeFragment extends Fragment {
                             hmGroupDesc.setText(response.body().getGroupDesc());
                             hmSessionDate.setText(response.body().getSessionStartAt());
                             if (response.body().getAllocatedStatus().equals("Accepted")) {
-                                hmSessionBtn.setText("SURRENDER");
-                                AllocatedOrAccepted.setText("ACCEPTED DATE");
-                                hmNewCollectionBtn.setBackground(getResources().getDrawable(R.drawable.enabled_button));
+                                hmSessionBtn.setText(R.string.hmSurrenderSession);
+                                AllocatedOrAccepted.setText(R.string.hmAcceptedDate);
+                                hmNewCollectionBtn.setBackgroundResource(R.drawable.enabled_button);
+                                hmNewCollectionBtn.setEnabled(true);
                             } else {
-                                hmSessionBtn.setText("ACCEPT");
-                                AllocatedOrAccepted.setText("ALLOCATED DATE");
-                                hmNewCollectionBtn.setBackground(getResources().getDrawable(R.drawable.disabled_button));
+                                hmSessionBtn.setText(R.string.hmAcceptSession);
+                                AllocatedOrAccepted.setText(R.string.hmAllocatedDate);
+                                hmNewCollectionBtn.setBackgroundResource(R.drawable.disabled_button);
+                                hmNewCollectionBtn.setEnabled(false);
                             }
                             currentSession.setVisibility(View.VISIBLE);
                             noSessionAvailable.setVisibility(View.GONE);
                         } else {
                             noSessionAvailable.setVisibility(View.VISIBLE);
                             currentSession.setVisibility(View.GONE);
-                            hmNewCollectionBtn.setBackground(getResources().getDrawable(R.drawable.disabled_button));
+                            hmNewCollectionBtn.setBackgroundResource(R.drawable.disabled_button);
+                            hmNewCollectionBtn.setEnabled(false);
                         }
                     }else{
                         noSessionAvailable.setVisibility(View.VISIBLE);
@@ -138,7 +138,8 @@ public class HomeFragment extends Fragment {
                         if(response.body().getErrorMessage() != null && retryBtnIsClicked) {
                             alertDialog(response.body().getErrorMessage());
                         }
-                        hmNewCollectionBtn.setBackground(getResources().getDrawable(R.drawable.disabled_button));
+                        hmNewCollectionBtn.setBackgroundResource(R.drawable.disabled_button);
+                        hmNewCollectionBtn.setEnabled(false);
                     }
                 }
             }
@@ -157,15 +158,24 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<AcceptSessionResponse> call, Response<AcceptSessionResponse> response) {
                 if(response.body().getAllocatedStatus() != null) {
                     if (response.body().getAllocatedStatus().equals("Accepted")) {
-                        hmSessionBtn.setText("SURRENDER");
-                        AllocatedOrAccepted.setText("ACCEPTED DATE");
+                        hmSessionBtn.setText(R.string.hmSurrenderSession);
+                        AllocatedOrAccepted.setText(R.string.hmAcceptedDate);
+                        hmNewCollectionBtn.setBackgroundResource(R.drawable.enabled_button);
+                        hmNewCollectionBtn.setEnabled(true);
                     } else if (response.body().getAllocatedStatus().equals("Allocated")) {
-                        hmSessionBtn.setText("ACCEPT");
-                        AllocatedOrAccepted.setText("ALLOCATED DATE");
+                        hmSessionBtn.setText(R.string.hmAcceptSession);
+                        AllocatedOrAccepted.setText(R.string.hmAllocatedDate);
+                        hmNewCollectionBtn.setBackgroundResource(R.drawable.disabled_button);
+                        hmNewCollectionBtn.setEnabled(false);
+
                     } else{
                         noSessionAvailable.setVisibility(View.VISIBLE);
                         currentSession.setVisibility(View.GONE);
+                        hmNewCollectionBtn.setBackgroundResource(R.drawable.disabled_button);
+                        hmNewCollectionBtn.setEnabled(false);
                     }
+                }else{
+                    alertDialog(getString(R.string.hmUnableToChangeCurrentSession));
                 }
                 if(response.body().getErrorMessage() != null) {
                     alertDialog(response.body().getErrorMessage());
@@ -182,14 +192,12 @@ public class HomeFragment extends Fragment {
     private void initView(View view){
         bundle = getArguments();
         if(bundle != null) {
-            logAuth = bundle.getString("Auth");
+            logToken = bundle.getString("Token");
             logUserId = bundle.getString("UserID");
             logWorkStationID = bundle.getString("WorkStationID");
             logWorkStationDtlID = bundle.getString("WorkStationDtlID");
         }
 
-        sessionDetailsParams = new HashMap<String, String>();
-        saSessionParams = new HashMap<String, String>();
         noSessionAvailable = view.findViewById(R.id.hmNoSession);
         currentSession = view.findViewById(R.id.hmCurrentSession);
         AllocatedOrAccepted = view.findViewById(R.id.hmAcceptedOrAllocated);
@@ -203,5 +211,30 @@ public class HomeFragment extends Fragment {
         hmRegion = view.findViewById(R.id.hmRegion);
         hmCurrency = view.findViewById(R.id.hmCurrency);
         hmSessionDate = view.findViewById(R.id.hmSessionDate);
+    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mContext = null;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.hmNewCollectionBtn:
+                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.hm_bottom_navigation);
+                selectedCollectionsFragment = new CollectionsFragment();
+                selectedCollectionsFragment.setArguments(bundle);
+                bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container,selectedCollectionsFragment)
+                        .commit();
+        }
     }
 }

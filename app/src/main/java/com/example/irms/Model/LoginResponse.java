@@ -5,21 +5,42 @@ public class LoginResponse {
     String WorkStationDtlID;
     String UserID;
     String WorkStationID;
+    String Token;
     String ErrorMessage;
 
-    public String getUserName(){
-    return UserName;
-    };
-    public String getWorkStationID(){
+    public String getUserName() {
+        return UserName;
+    }
+
+    ;
+
+    public String getWorkStationID() {
         return WorkStationID;
-    };
-    public String getUserID(){
+    }
+
+    ;
+
+    public String getUserID() {
         return UserID;
-    };
-    public String getWorkStationDtlID(){
+    }
+
+    ;
+
+    public String getToken() {
+        return Token;
+    }
+
+    ;
+
+    public String getWorkStationDtlID() {
         return WorkStationDtlID;
-    };
-    public String getErrorMessage(){
+    }
+
+    ;
+
+    public String getErrorMessage() {
         return ErrorMessage;
-    };
+    }
+
+    ;
 }

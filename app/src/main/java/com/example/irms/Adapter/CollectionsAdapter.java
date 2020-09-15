@@ -1,23 +1,24 @@
 package com.example.irms.Adapter;
 
-import android.view.View;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.irms.ExistingCollections;
 import com.example.irms.NewCollections;
 
 public class CollectionsAdapter extends FragmentStatePagerAdapter {
     final int page_count = 2;
-    private String[] tab_titles = {"New","Existing"};
-    public CollectionsAdapter(@NonNull FragmentManager fm) {
-        super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    Bundle bundle;
+    private String[] tab_titles = {"New", "Existing"};
+
+    public CollectionsAdapter(@NonNull FragmentManager fm, Bundle bundle) {
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        this.bundle = bundle;
     }
 
     @Override
@@ -28,11 +29,15 @@ public class CollectionsAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch(position){
+        switch (position) {
             case 0:
-                 return new NewCollections();
+                NewCollections newCollections = new NewCollections();
+                newCollections.setArguments(bundle);
+                return newCollections;
             case 1:
-              return new ExistingCollections();
+                ExistingCollections existingCollections = new ExistingCollections();
+                existingCollections.setArguments(bundle);
+                return existingCollections;
             default:
                 return null;
         }

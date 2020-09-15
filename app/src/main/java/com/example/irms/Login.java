@@ -20,8 +20,10 @@ import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,7 @@ Button logLangBtn,logSignIn;
 EditText logName,logPassword;
 TextView logHelp;
 TextWatcher emptyField;
+ProgressBar progressBar;
 RequestBody body;
 Call<LoginResponse> call;
 String serialNum,logNameTxt,logPassTxt;
@@ -70,13 +73,16 @@ String serialNum,logNameTxt,logPassTxt;
         logSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+               getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                logNameTxt = logName.getText().toString();
                 logPassTxt = logPassword.getText().toString();
                 String creds = String.format("%s:%s", logNameTxt, logPassTxt);
                 final String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.NO_WRAP);
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("UserName",logNameTxt);
-                params.put("MachineName", Build.SERIAL);
+                params.put("MachineName", "JZV319080056");
                 params.put("Password",logPassTxt);
 
                 body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(params)).toString());
@@ -95,7 +101,7 @@ String serialNum,logNameTxt,logPassTxt;
                                     Intent intent = new Intent(Login.this, Home.class);
                                     intent.putExtra("UserID", response.body().getUserID());
                                     intent.putExtra("UserName", response.body().getUserName());
-                                    intent.putExtra("Auth", auth);
+                                    intent.putExtra("Token", "Bearer " + response.body().getToken());
                                     intent.putExtra("WorkStationID", response.body().getWorkStationID());
                                     intent.putExtra("WorkStationDtlID", response.body().getWorkStationDtlID());
                                     startActivity(intent);
@@ -116,11 +122,13 @@ String serialNum,logNameTxt,logPassTxt;
                        Log.e("loginError",t.getMessage());
                     }
                 });
+                progressBar.setVisibility(View.GONE);
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
         });
     }
     private void setOnChangeLanguage(){
-        String[] languageOptions = {"Kiswahili","English"};
+        String[] languageOptions = {getString(R.string.swahili_acc),getString(R.string.english_acc)};
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(Login.this);
         mBuilder.setTitle(R.string.logSelectLang);
         mBuilder.setSingleChoiceItems(languageOptions, -1, new DialogInterface.OnClickListener() {
@@ -164,6 +172,7 @@ String serialNum,logNameTxt,logPassTxt;
         logPassword = findViewById(R.id.logPassword);
         logHelp =  findViewById(R.id.logHelp);
         serialNum = Build.SERIAL;
+        progressBar = findViewById(R.id.progressBar);
     }
     public void loadLocale(){
         SharedPreferences savedLang = getSharedPreferences("Settings",MODE_PRIVATE);
@@ -199,7 +208,7 @@ String serialNum,logNameTxt,logPassTxt;
     }
     public AlertDialog alertDialog(int message){
         AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-        builder.setMessage(message).setPositiveButton("OK",null);
+        builder.setMessage(message).setPositiveButton(R.string.ALERT_OK,null);
        AlertDialog createAlertDialog = builder.create();
        createAlertDialog.show();
        return createAlertDialog;

@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#000000</color>
     <color name="disabledBtn">#A5A0A0</color>
+    <color name="view_color">#e8e8e8</color>
     <color name="search_bar_color">#FBFBFB</color>
     <color name="border_dark_grey">#ECEBEB</color>
 </resources>
