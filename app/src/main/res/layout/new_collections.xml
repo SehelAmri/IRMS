@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/new_collection_no_access"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="30dp"
+            android:text="Currently not in a session.Cashier has to be within a session for collection"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/new_collection_accepted"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="20dp"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="2dp"
+                    android:text="Currency"
+                    android:textSize="15sp" />
+
+                <Spinner
+                    android:id="@+id/nc_currency_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overlapAnchor="false"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="2dp"
+                    android:text="Category"
+                    android:textSize="15sp" />
+
+                <Spinner
+                    android:id="@+id/nc_category_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overlapAnchor="false"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/nc_scrollbars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:scrollbarThumbVertical="@null">
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alignmentMode="alignMargins"
+                android:columnCount="2"
+                android:columnOrderPreserved="true"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="15dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="10dp">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:background="#E1F8DC"
+                            android:padding="40dp"
+                            android:src="@drawable/cow3" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:padding="10dp"
+                        android:text="Ada ya uchinjaji Ngombe"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="10dp">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:background="#E1F8DC"
+                            android:padding="40dp"
+                            android:src="@drawable/goat" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:padding="10dp"
+                        android:text="Ada ya uchinjaji Mbuzi"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="10dp">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:background="#E1F8DC"
+                            android:padding="40dp"
+                            android:src="@drawable/sheep" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:padding="10dp"
+                        android:text="Ada ya uchinjaji Kondoo"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="10dp">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:background="#E1F8DC"
+                            android:padding="40dp"
+                            android:src="@drawable/cow3" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:padding="10dp"
+                        android:text="Ada ya karantini ngombe"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="10dp">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:background="#E1F8DC"
+                            android:padding="40dp"
+                            android:src="@drawable/goat" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:padding="10dp"
+                        android:text="Ada ya karantini mbuzi"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="10dp">
+
+                        <ImageView
+                            android:layout_width="130dp"
+                            android:layout_height="130dp"
+                            android:background="#E1F8DC"
+                            android:padding="40dp"
+                            android:src="@drawable/sheep" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:padding="10dp"
+                        android:text="Ada ya karantini kondoo"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </GridLayout>
+        </ScrollView>
+    </LinearLayout>
+</RelativeLayout>
